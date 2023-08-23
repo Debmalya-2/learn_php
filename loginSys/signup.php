@@ -16,7 +16,8 @@
         }
         else{
             if(($pass == $cpass)){
-                $sql = "INSERT INTO `registration` (`username`, `email`, `password`, `date`) VALUES ('$uname', '$umail', '$pass', current_timestamp())";
+                $hashpwd = password_hash($pass, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO `registration` (`username`, `email`, `password`, `date`) VALUES ('$uname', '$umail', '$hashpwd', current_timestamp())";
                 $result = mysqli_query($conn, $sql);
                 if($result){
                     $showAlert=true;
