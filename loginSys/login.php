@@ -6,15 +6,21 @@
         $uname=$_POST["uname"];
         $pass=$_POST["pass"];
 
-        $sql = "SELECT * FROM registration where username='$uname' AND password='$pass'";
+        $sql = "SELECT * FROM registration where username='$uname'";
         $result = mysqli_query($conn, $sql);
         $num = mysqli_num_rows($result);
         if($num==1){
-            $login=true;
-            session_start();
-            $_SESSION['loggedin']=true;
-            $_SESSION['username']=$uname;
-            header("location: welcome.php");
+            while($row = mysqli_fetch_assoc($result)){
+                if(password_verify($pass, $row['password'])){
+                    $login = true;
+                    session_start();
+                    $_SESSION['loggedin']=true;
+                    $_SESSION['username']=$uname;
+                    header("location: welcome.php");
+                }
+            }
+            
+            
         }
         else{
             $showError="Invalid Credentials";
